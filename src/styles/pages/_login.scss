@@ -1,0 +1,33 @@
+.authentication {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 420px;
+  min-height: calc(100vh - 152px);
+  .wrapper {
+    width: 100%;
+    margin: 0 auto;
+    padding: 48px;
+    border-radius: 6px;
+    background: $white;
+    box-shadow: $default-box-shadow;
+    @media (max-width: 480px) {
+      padding: 24px;
+    }
+    h1 {
+      font-size: 36px;
+      line-height: 48px;
+      margin-bottom: 48px;
+      text-align: center;
+    }
+    .button.primary {
+      margin-bottom: 16px;
+    }
+    .sub-text {
+      margin-bottom: 16px;
+      color: $light-text-color;
+      text-align: center;
+      display: block;
+    }
+  }
+}

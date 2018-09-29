@@ -1,0 +1,8 @@
+.footer {
+  padding: 24px;
+  text-align: center;
+  opacity: 0.66;
+  @media (max-width: 480px) {
+    padding: 16px;
+  }
+}

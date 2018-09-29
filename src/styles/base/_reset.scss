@@ -1,0 +1,43 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  font-family: "Inter UI", Arial, Helvetica, sans-serif;
+  color: $text-color;
+  background: $light-bg-color;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  outline: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  color: $primary-color;
+}
+
+input,
+button,
+select,
+textarea {
+  font-size: 16px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
+}

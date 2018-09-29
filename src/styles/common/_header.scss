@@ -1,0 +1,61 @@
+.header {
+  background: $white;
+  padding: 24px 0;
+  @media (max-width: 480px) {
+    padding: 16px 0;
+  }
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo {
+    a {
+      img {
+        max-width: 240px;
+        display: block;
+        @media (max-width: 480px) {
+          max-width: 200px;
+        }
+      }
+    }
+  }
+  .user-menu {
+    position: relative;
+    .trigger {
+      display: flex;
+      align-items: center;
+      img {
+        margin-right: 8px;
+      }
+      @media (max-width: 480px) {
+        span {
+          display: none;
+        }
+      }
+    }
+    .dropdown {
+      display: none;
+      position: absolute;
+      padding: 8px;
+      background: $white;
+      border-radius: 6px;
+      top: 48px;
+      right: 0px;
+      box-shadow: $default-box-shadow;
+      &.active {
+        display: block;
+      }
+      a {
+        display: block;
+        min-width: 160px;
+        line-height: 24px;
+        padding: 8px 16px;
+        &:hover {
+          background: $light-bg-color;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

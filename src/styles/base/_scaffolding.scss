@@ -1,0 +1,11 @@
+.container {
+  max-width: 1200px;
+  padding: 0 16px;
+  margin: 0 auto;
+  &.fluid {
+    max-width: 100%;
+  }
+}
+.main {
+  min-height: calc(100vh - 152px);
+}

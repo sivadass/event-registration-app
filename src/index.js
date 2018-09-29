@@ -40,7 +40,7 @@ store.subscribe(() => {
 const App = props => {
   return (
     <Provider store={store}>
-      <Router>
+      <Router basename={process.env.PUBLIC_URL}>
         <div className="app-wrapper">
           <Header />
           <div className="main">

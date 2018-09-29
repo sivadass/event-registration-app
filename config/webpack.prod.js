@@ -8,7 +8,7 @@ const webpackCommon = require("./webpack.common");
 
 const pathsToClean = ["docs"];
 const cleanOptions = {
-  root: path.resolve(__dirname, "/sivadass/")
+  root: path.resolve(__dirname, "/")
 };
 
 module.exports = merge.smart(webpackCommon, {

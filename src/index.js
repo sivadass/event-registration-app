@@ -1,6 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  routerMiddleware,
+  connectRouter,
+  ConnectedRouter
+} from "connected-react-router";
+import { createBrowserHistory } from "history";
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
@@ -21,14 +27,19 @@ import EventDetails from "./components/pages/event-details";
 import reducer from "./reducers";
 import { loadState, saveState } from "./utils/local-storage";
 
+const history = createBrowserHistory();
 const middleware = [thunk];
+
+middleware.push(routerMiddleware(history));
+
 if (process.env.NODE_ENV !== "production") {
   middleware.push(createLogger());
 }
 
 const persistedState = loadState();
+
 const store = createStore(
-  reducer,
+  connectRouter(history)(reducer),
   persistedState,
   applyMiddleware(...middleware)
 );
@@ -40,23 +51,25 @@ store.subscribe(() => {
 const App = props => {
   return (
     <Provider store={store}>
-      <Router basename={process.env.PUBLIC_URL}>
-        <div className="app-wrapper">
-          <Header />
-          <div className="main">
-            <Switch>
-              <Route path="/login" component={Login} />
-              <Route path="/register" component={Register} />
-              <Route exact path="/" component={Dashboard} />
-              <Route path="/add-event" component={AddEvent} />
-              <Route exact path="/events/:id" component={EventDetails} />
-              <Route exact path="/events/:id/edit" component={EditEvent} />
-              <Route component={NoMatch} />
-            </Switch>
+      <ConnectedRouter history={history}>
+        <Router basename={process.env.PUBLIC_URL}>
+          <div className="app-wrapper">
+            <Header />
+            <div className="main">
+              <Switch>
+                <Route path="/login" component={Login} />
+                <Route path="/register" component={Register} />
+                <Route exact path="/" component={Dashboard} />
+                <Route path="/add-event" component={AddEvent} />
+                <Route exact path="/events/:id" component={EventDetails} />
+                <Route exact path="/events/:id/edit" component={EditEvent} />
+                <Route component={NoMatch} />
+              </Switch>
+            </div>
+            <Footer />
           </div>
-          <Footer />
-        </div>
-      </Router>
+        </Router>
+      </ConnectedRouter>
     </Provider>
   );
 };

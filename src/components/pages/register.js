@@ -32,7 +32,7 @@ class Register extends React.Component {
               setTimeout(() => {
                 alert(JSON.stringify(values, null, 2));
                 actions.setSubmitting(false);
-              }, 100000);
+              }, 1000);
             }}
           >
             {props => {

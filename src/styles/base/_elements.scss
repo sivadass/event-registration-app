@@ -15,6 +15,10 @@
 .form-group {
   margin-bottom: 16px;
 }
+.input-feedback {
+  font-size: 14px;
+  color: $error-color;
+}
 
 .button {
   border: 1px solid $light-text-color;
@@ -37,5 +41,8 @@
     line-height: 48px;
     text-align: center;
     color: inherit;
+  }
+  &.muted {
+    border-color: transparent;
   }
 }

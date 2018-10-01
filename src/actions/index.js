@@ -1,6 +1,19 @@
-export const DO_SOME_ACTION = "DO_SOME_ACTION";
+// Login
+export const LOGIN_REQUEST = "LOGIN_REQUEST";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAILURE = "LOGIN_FAILURE";
 
-export const doSomeAction = data => ({
-  type: DO_SOME_ACTION,
-  payload: data
-});
+// Logout
+export const LOGOUT_USER = "LOGOUT_USER";
+
+// Register
+export const REGISTER_REQUEST = "REGISTER_REQUEST";
+export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
+export const REGISTER_FAILURE = "REGISTER_FAILURE";
+export const REGISTER_RESET_MESSAGES = "REGISTER_RESET_MESSAGES";
+
+// Events
+export const ADD_EVENT_REQUEST = "ADD_EVENT_REQUEST";
+export const ADD_EVENT_SUCCESS = "ADD_EVENT_SUCCESS";
+export const ADD_EVENT_FAILURE = "ADD_EVENT_FAILURE";
+export const ADD_EVENT_RESET = "ADD_EVENT_RESET";

@@ -9,3 +9,19 @@
 .main {
   min-height: calc(100vh - 152px);
 }
+
+.page-header {
+  margin: 16px 0;
+  font-size: 20px;
+  .back-button {
+    margin-right: 16px;
+  }
+}
+
+.page-content {
+  margin-bottom: 16px;
+  background: $white;
+  padding: 24px;
+  border-radius: 6px;
+  box-shadow: $default-box-shadow;
+}

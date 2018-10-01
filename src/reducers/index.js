@@ -1,21 +1,16 @@
 import { combineReducers } from "redux";
-import { DO_SOME_ACTION } from "../actions";
+import auth from "./auth";
+import users from "./users";
+import events from "./events";
 
-const initialState = {
-  isLoggedIn: false
-};
-
-const someUserData = (state = initialState, action) => {
-  if (action.type === DO_SOME_ACTION) {
-    return Object.assign({}, state, {
-      isLoggedIn: action.payload
-    });
-  }
-  return state;
-};
-
-const rootReducer = combineReducers({
-  someUserData
+const appReducer = combineReducers({
+  auth,
+  users,
+  events
 });
+
+const rootReducer = (state, action) => {
+  return appReducer(state, action);
+};
 
 export default rootReducer;

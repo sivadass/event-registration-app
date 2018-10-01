@@ -3,10 +3,20 @@ import { Link } from "react-router-dom";
 import Loader from "../common/loader";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import PropTypes from "prop-types";
+import { loginUser } from "../../actions/auth";
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    if (this.props.isAuthenticated) {
+      this.props.history.push("/");
+    }
   }
 
   render() {
@@ -14,6 +24,9 @@ class Login extends React.Component {
       <div className="container authentication">
         <div className="wrapper">
           <h1>Sign In</h1>
+          {this.props.errorMessage && (
+            <div className="alert alert-danger">{this.props.errorMessage}</div>
+          )}
           <Formik
             initialValues={{ email: "", password: "" }}
             validationSchema={Yup.object().shape({
@@ -26,9 +39,10 @@ class Login extends React.Component {
             })}
             onSubmit={(values, actions) => {
               setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
+                this.props.loginUser(values);
                 actions.setSubmitting(false);
-              }, 100000);
+                actions.resetForm();
+              }, 1000);
             }}
           >
             {props => {
@@ -88,7 +102,7 @@ class Login extends React.Component {
                     type="submit"
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? (
+                    {this.props.isLoading ? (
                       <Loader size={24} inverted={true} />
                     ) : (
                       "Login"
@@ -108,4 +122,22 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapStateToProps = ({ auth }) => ({
+  isAuthenticated: auth.isAuthenticated,
+  isLoading: auth.isLoading,
+  errorMessage: auth.errorMessage
+});
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ loginUser }, dispatch);
+}
+
+Login.ProtoTypes = {
+  auth: PropTypes.object,
+  loginUser: PropTypes.func
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);

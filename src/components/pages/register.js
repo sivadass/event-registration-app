@@ -3,10 +3,21 @@ import { Link } from "react-router-dom";
 import Loader from "../common/loader";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import PropTypes from "prop-types";
+import { addUser } from "../../actions/users";
+import uuid from "uuid/v4";
 
 class Register extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    if (this.props.isAuthenticated) {
+      this.props.history.push("/");
+    }
   }
 
   render() {
@@ -14,6 +25,14 @@ class Register extends React.Component {
       <div className="container authentication">
         <div className="wrapper">
           <h1>Sign Up</h1>
+          {this.props.successMessage && (
+            <div className="alert alert-success">
+              {this.props.successMessage}
+            </div>
+          )}
+          {this.props.errorMessage && (
+            <div className="alert alert-danger">{this.props.errorMessage}</div>
+          )}
           <Formik
             initialValues={{ email: "", fullName: "", password: "" }}
             validationSchema={Yup.object().shape({
@@ -30,8 +49,15 @@ class Register extends React.Component {
             })}
             onSubmit={(values, actions) => {
               setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
+                let userData = {
+                  userID: uuid(),
+                  fullName: values.fullName,
+                  email: values.email,
+                  password: values.password
+                };
+                this.props.addUser(userData);
                 actions.setSubmitting(false);
+                actions.resetForm();
               }, 1000);
             }}
           >
@@ -130,4 +156,24 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+const mapStateToProps = ({ users, auth }) => ({
+  users: users.users,
+  isAuthenticated: auth.isAuthenticated,
+  isLoading: users.isLoading,
+  successMessage: users.successMessage,
+  errorMessage: users.errorMessage
+});
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ addUser }, dispatch);
+}
+
+Register.ProtoTypes = {
+  auth: PropTypes.object,
+  loginUser: PropTypes.func
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Register);

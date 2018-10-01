@@ -12,12 +12,29 @@
     border-color: $primary-color;
   }
 }
+textarea.form-control {
+  padding-top: 8px;
+  min-height: 72px;
+  padding-bottom: 8px;
+}
 .form-group {
   margin-bottom: 16px;
 }
 .input-feedback {
   font-size: 14px;
   color: $error-color;
+}
+
+.custom-select {
+  .react-select__control {
+    border: 1px solid $light-text-color;
+    background: $white;
+    height: 44px;
+    border-radius: 6px;
+    .react-select__indicator-separator {
+      display: none;
+    }
+  }
 }
 
 .button {
@@ -45,4 +62,20 @@
   &.muted {
     border-color: transparent;
   }
+}
+.alert {
+  padding: 8px 16px;
+  margin-bottom: 16px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+}
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+.alert-success {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
 }

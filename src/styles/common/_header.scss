@@ -58,4 +58,34 @@
       }
     }
   }
+  .header-button {
+    display: inline-block;
+    margin-left: 8px;
+    height: 36px;
+    width: 120px;
+    text-align: center;
+    border-radius: 6px;
+    line-height: 36px;
+    padding: 0 16px;
+    background: $primary-color;
+    border: 1px solid transparent;
+    color: $white;
+    @media (max-width: 480px) {
+      width: 72px;
+    }
+    &.secondary {
+      border-color: $primary-color;
+      background: $white;
+      color: $primary-color;
+      @media (max-width: 530px) {
+        display: none;
+      }
+    }
+    &.add-new {
+      background: $accent-color;
+      width: auto;
+      margin-left: auto;
+      margin-right: 36px;
+    }
+  }
 }

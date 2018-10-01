@@ -1,4 +1,13 @@
 .add-event-form {
-  max-width: 480px;
-  margin: 32px auto;
+  padding: 24px;
+  .col-6,
+  .col-12 {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  h4 {
+    color: $primary-color;
+    font-size: 18px;
+    font-weight: normal;
+  }
 }

@@ -1,0 +1,28 @@
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+$columns: 12;
+
+@for $i from 1 through $columns {
+  .col-#{$i} {
+    flex: 0 0 100% / $columns * $i;
+    padding: 8px;
+  }
+  .col-offset-#{$i} {
+    margin-left: 100% / $columns * $i;
+  }
+}
+
+// Responsive Breakpoints
+[class^="col-"] {
+  // Tablets
+  @media (max-width: 768px) {
+    flex-basis: 50%;
+  }
+  // Mobiles
+  @media (max-width: 480px) {
+    flex-basis: 100%;
+  }
+}

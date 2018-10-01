@@ -10,6 +10,8 @@ import uuid from "uuid/v4";
 import { Link } from "react-router-dom";
 import { locations, tags } from "../../utils/select-options";
 import CustomSelect from "../common/custom-select";
+import CustomTimePicker from "../common/custom-time-picker";
+import CustomFieldsGenerator from "../common/custom-fields-generator";
 
 class AddEvent extends React.Component {
   render() {
@@ -22,7 +24,7 @@ class AddEvent extends React.Component {
           </Link>
           Add Event
         </div>
-        <div className="page-content">
+        <div className="page-content event-form-wrapper">
           <Formik
             initialValues={{
               eventName: "",
@@ -31,6 +33,7 @@ class AddEvent extends React.Component {
               location: "",
               fees: "",
               tags: [],
+              date: "",
               maxAllowedParticipants: 0,
               customFields: [],
               userID: this.props.userID
@@ -43,14 +46,15 @@ class AddEvent extends React.Component {
               description: Yup.string()
                 .min(20, "Minimum 20 characters")
                 .required("Description is required"),
-              duration: Yup.number()
-                .integer("Only positive numbers")
-                .min(1, "Minimum 1 hour")
-                .required("Duration is required"),
+              duration: Yup.string()
+                .matches(/(^[0-9]+$)/, "Enter only digits here")
+                .required("Duration is required")
+                .max(2, "Maximum 99 hours"),
               location: Yup.string().required("Loaction is required"),
-              fees: Yup.number()
-                .positive()
-                .integer(),
+              fees: Yup.string()
+                .matches(/(^[0-9]+$)/, "Enter only digits here")
+                .required("Fees is required")
+                .max(5, "Maximum 5 digits only"),
               tags: Yup.array()
                 .min(3, "Pick at least 3 tags")
                 .of(
@@ -59,10 +63,13 @@ class AddEvent extends React.Component {
                     value: Yup.string().required()
                   })
                 ),
-              maxAllowedParticipants: Yup.number()
-                .required("Maximum allowed participants is required")
-                .positive()
-                .integer(),
+              date: Yup.string().required(
+                "Please select the date of the event"
+              ),
+              maxAllowedParticipants: Yup.string()
+                .matches(/(^[0-9]+$)/, "Enter only digits here")
+                .required("Maximum allowed partcipant is required")
+                .max(5, "Maximum 5 digits only"),
               customFields: Yup.array().of(Yup.object())
             })}
             onSubmit={(values, actions) => {
@@ -98,106 +105,203 @@ class AddEvent extends React.Component {
               } = props;
               return (
                 <form onSubmit={handleSubmit} className="add-event-form">
-                  <div className="form-group">
-                    <label htmlFor="eventName">Event Name</label>
-                    <input
-                      id="eventName"
-                      placeholder="Some Cool Event in Chennai"
-                      type="text"
-                      value={values.eventName}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      className={
-                        errors.eventName && touched.eventName
-                          ? "form-control error"
-                          : "form-control"
-                      }
-                    />
-                    {errors.eventName &&
-                      touched.eventName && (
-                        <div className="input-feedback">{errors.eventName}</div>
-                      )}
+                  <div className="row">
+                    <div className="col-12">
+                      <h4>Event Details</h4>
+                    </div>
+                  </div>
+                  <div className="row" style={{ marginBottom: 24 }}>
+                    <div className="col-6">
+                      <div className="form-group">
+                        <label htmlFor="eventName">Event Name</label>
+                        <input
+                          id="eventName"
+                          placeholder="Some Cool Event in Chennai"
+                          type="text"
+                          value={values.eventName}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          className={
+                            errors.eventName && touched.eventName
+                              ? "form-control error"
+                              : "form-control"
+                          }
+                        />
+                        {errors.eventName &&
+                          touched.eventName && (
+                            <div className="input-feedback">
+                              {errors.eventName}
+                            </div>
+                          )}
+                      </div>
+                      <CustomTimePicker
+                        id="date"
+                        label="Day of the event"
+                        value={values.date}
+                        onChange={setFieldValue}
+                        onBlur={setFieldTouched}
+                        error={errors.date}
+                        touched={touched.date}
+                      />
+
+                      <div className="form-group">
+                        <label htmlFor="duration">Duration (in hours)</label>
+                        <input
+                          id="duration"
+                          placeholder="Enter duration"
+                          type="text"
+                          value={values.duration}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          className={
+                            errors.duration && touched.duration
+                              ? "form-control error"
+                              : "form-control"
+                          }
+                        />
+                        {errors.duration &&
+                          touched.duration && (
+                            <div className="input-feedback">
+                              {errors.duration}
+                            </div>
+                          )}
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <CustomSelect
+                        id="location"
+                        label="Location"
+                        isMulti={false}
+                        options={locations}
+                        value={values.location}
+                        onChange={setFieldValue}
+                        onBlur={setFieldTouched}
+                        error={errors.location}
+                        touched={touched.location}
+                      />
+                      <div className="form-group">
+                        <label htmlFor="description">Description</label>
+                        <textarea
+                          id="description"
+                          placeholder="Tell more about the event"
+                          type="text"
+                          value={values.description}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          className={
+                            errors.description && touched.description
+                              ? "form-control error"
+                              : "form-control"
+                          }
+                        />
+                        {errors.description &&
+                          touched.description && (
+                            <div className="input-feedback">
+                              {errors.description}
+                            </div>
+                          )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-12">
+                      <h4>Event Pricing</h4>
+                    </div>
+                  </div>
+                  <div className="row" style={{ marginBottom: 24 }}>
+                    <div className="col-6">
+                      <div className="form-group">
+                        <label htmlFor="fees">Fees (in Dollars)</label>
+                        <input
+                          id="fees"
+                          placeholder="Enter amount"
+                          type="text"
+                          value={values.fees}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          className={
+                            errors.fees && touched.fees
+                              ? "form-control error"
+                              : "form-control"
+                          }
+                        />
+                        {errors.fees &&
+                          touched.fees && (
+                            <div className="input-feedback">{errors.fees}</div>
+                          )}
+                      </div>
+                    </div>
+                    <div className="col-6">
+                      <div className="form-group">
+                        <label htmlFor="maxAllowedParticipants">
+                          Maximum Allowed Participants
+                        </label>
+                        <input
+                          id="maxAllowedParticipants"
+                          placeholder="Enter maximum allowed participants"
+                          type="text"
+                          value={values.maxAllowedParticipants}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          className={
+                            errors.maxAllowedParticipants &&
+                            touched.maxAllowedParticipants
+                              ? "form-control error"
+                              : "form-control"
+                          }
+                        />
+                        {errors.maxAllowedParticipants &&
+                          touched.maxAllowedParticipants && (
+                            <div className="input-feedback">
+                              {errors.maxAllowedParticipants}
+                            </div>
+                          )}
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="form-group">
-                    <label htmlFor="description">Description</label>
-                    <textarea
-                      id="description"
-                      placeholder="Tell more about the event"
-                      type="text"
-                      value={values.description}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      className={
-                        errors.description && touched.description
-                          ? "form-control error"
-                          : "form-control"
-                      }
-                    />
-                    {errors.description &&
-                      touched.description && (
-                        <div className="input-feedback">
-                          {errors.description}
-                        </div>
-                      )}
+                  <div className="row">
+                    <div className="col-12">
+                      <h4>Additional Information</h4>
+                    </div>
                   </div>
 
-                  <div className="form-group">
-                    <label htmlFor="duration">Duration (in hours)</label>
-                    <input
-                      id="duration"
-                      placeholder="Eg: 1"
-                      type="text"
-                      value={values.duration}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      className={
-                        errors.duration && touched.duration
-                          ? "form-control error"
-                          : "form-control"
-                      }
-                    />
-                    {errors.duration &&
-                      touched.duration && (
-                        <div className="input-feedback">{errors.duration}</div>
-                      )}
+                  <div className="row" style={{ marginBottom: 24 }}>
+                    <div className="col-6">
+                      <CustomFieldsGenerator label="Custom Fields" />
+                    </div>
+                    <div className="col-6">
+                      <CustomSelect
+                        id="tags"
+                        label="Tags (select at least 3) "
+                        isMulti={true}
+                        options={tags}
+                        value={values.tags}
+                        onChange={setFieldValue}
+                        onBlur={setFieldTouched}
+                        error={errors.tags}
+                        touched={touched.tags}
+                      />
+                    </div>
                   </div>
 
-                  <CustomSelect
-                    id="location"
-                    label="Location"
-                    isMulti={false}
-                    options={locations}
-                    value={values.location}
-                    onChange={setFieldValue}
-                    onBlur={setFieldTouched}
-                    error={errors.location}
-                    touched={touched.location}
-                  />
-
-                  <CustomSelect
-                    id="tags"
-                    label="Tags (select at least 3) "
-                    isMulti={true}
-                    options={tags}
-                    value={values.tags}
-                    onChange={setFieldValue}
-                    onBlur={setFieldTouched}
-                    error={errors.tags}
-                    touched={touched.tags}
-                  />
-
-                  <button
-                    className="button primary"
-                    type="submit"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <Loader size={24} inverted={true} />
-                    ) : (
-                      "ADD EVENT"
-                    )}
-                  </button>
+                  <div className="row">
+                    <div className="col-6" />
+                    <div className="col-6">
+                      <button
+                        className="button primary"
+                        type="submit"
+                        disabled={isSubmitting}
+                        style={{ maxWidth: 240, float: "right" }}
+                      >
+                        {isSubmitting ? (
+                          <Loader size={24} inverted={true} />
+                        ) : (
+                          "ADD EVENT"
+                        )}
+                      </button>
+                    </div>
+                  </div>
                 </form>
               );
             }}

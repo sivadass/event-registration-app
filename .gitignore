@@ -62,3 +62,5 @@ typings/
 
 # mac specific files
 .DS_Store
+
+dist/

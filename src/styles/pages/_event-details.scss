@@ -1,0 +1,24 @@
+.event-meta {
+  margin-bottom: 36px;
+  h1 {
+    font-size: 36px;
+    line-height: 48px;
+    margin-bottom: 8px;
+  }
+  p {
+    margin-bottom: 4px;
+  }
+  .event-meta-item {
+    margin-right: 16px;
+    strong {
+      color: $primary-color;
+    }
+    .icon {
+      margin-right: 6px;
+      opacity: 0.66;
+    }
+  }
+}
+.event-description {
+  margin-bottom: 36px;
+}

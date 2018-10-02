@@ -15,11 +15,10 @@ import CustomFieldsGenerator from "../common/custom-fields-generator";
 
 class AddEvent extends React.Component {
   render() {
-    console.log(this.props.userID);
     return (
       <div className="container">
         <div className="page-header">
-          <Link to="/login" className="back-button">
+          <Link to="/" className="back-button">
             &larr;
           </Link>
           Add Event

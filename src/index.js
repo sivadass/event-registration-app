@@ -15,6 +15,7 @@ import NoMatch from "./components/pages/no-match";
 import AddEvent from "./components/pages/add-event";
 import EditEvent from "./components/pages/edit-event";
 import EventDetails from "./components/pages/event-details";
+import ScrollToTop from "./components/common/scroll-to-top";
 import { store, history } from "./store";
 import { saveState } from "./utils/local-storage";
 
@@ -26,21 +27,31 @@ const App = props => {
   return (
     <Provider store={store}>
       <ConnectedRouter history={history}>
-        <div className="app-wrapper">
-          <Header />
-          <div className="main">
-            <Switch>
-              <Route path="/login" component={Login} />
-              <Route path="/register" component={Register} />
-              <ProtectedRoute exact path="/" component={Dashboard} />
-              <Route path="/add-event" component={AddEvent} />
-              <Route exact path="/events/:id" component={EventDetails} />
-              <Route exact path="/events/:id/edit" component={EditEvent} />
-              <Route component={NoMatch} />
-            </Switch>
+        <ScrollToTop>
+          <div className="app-wrapper">
+            <Header />
+            <div className="main">
+              <Switch>
+                <Route path="/login" component={Login} />
+                <Route path="/register" component={Register} />
+                <ProtectedRoute exact path="/" component={Dashboard} />
+                <ProtectedRoute exact path="/add-event/" component={AddEvent} />
+                <ProtectedRoute
+                  exact
+                  path="/events/:id/"
+                  component={EventDetails}
+                />
+                <ProtectedRoute
+                  exact
+                  path="/events/:id/edit/"
+                  component={EditEvent}
+                />
+                <Route component={NoMatch} />
+              </Switch>
+            </div>
+            <Footer />
           </div>
-          <Footer />
-        </div>
+        </ScrollToTop>
       </ConnectedRouter>
     </Provider>
   );

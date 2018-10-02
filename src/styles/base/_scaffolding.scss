@@ -16,6 +16,11 @@
   .back-button {
     margin-right: 16px;
   }
+  span {
+    font-size: 14px;
+    line-height: 24px;
+    opacity: 0.66;
+  }
 }
 
 .page-content {
@@ -24,4 +29,10 @@
   padding: 24px;
   border-radius: 6px;
   box-shadow: $default-box-shadow;
+}
+
+.page-loading {
+  display: flex;
+  justify-content: center;
+  min-height: 400px;
 }

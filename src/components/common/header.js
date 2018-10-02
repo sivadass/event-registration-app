@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import { logoutUser } from "../../actions/auth";
+import Icon from "../common/icons";
 
 class Header extends React.Component {
   constructor(props) {
@@ -65,7 +66,7 @@ class Header extends React.Component {
           </div>
           {isAuthenticated && (
             <Link to="/add-event/" className="header-button add-new">
-              + ADD NEW EVENT
+              <Icon name="add-white" size={24} /> <span>ADD NEW</span>
             </Link>
           )}
           {isAuthenticated ? renderUserMenu : renderAuthButtons}

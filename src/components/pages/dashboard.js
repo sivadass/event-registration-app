@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import { addEvent } from "../../actions/events";
+import { Link } from "react-router-dom";
 
 class Dashboard extends React.Component {
   render() {
@@ -16,10 +17,14 @@ class Dashboard extends React.Component {
         <div className="page-content">
           {events.map(event => {
             return (
-              <div className="event-item" key={event.eventID}>
+              <Link
+                className="event-item"
+                key={event.eventID}
+                to={`/events/${event.eventID}/`}
+              >
                 <h1>{event.eventName}</h1>
                 <p>{event.eventDescription}</p>
-              </div>
+              </Link>
             );
           })}
         </div>

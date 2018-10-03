@@ -5,6 +5,8 @@ import {
   ADD_EVENT_RESET,
   DELETE_EVENT_REQUEST,
   DELETE_EVENT_SUCCESS,
+  EDIT_EVENT_REQUEST,
+  EDIT_EVENT_SUCCESS,
   LOGOUT_USER
 } from "../actions";
 
@@ -72,6 +74,36 @@ const events = (state = initialState, action) => {
       isLoading: false,
       errorMessage: "",
       events: allEvents
+    });
+  }
+  if (action.type === EDIT_EVENT_REQUEST) {
+    return Object.assign({}, state, {
+      isLoading: true,
+      errorMessage: ""
+    });
+  }
+  if (action.type === EDIT_EVENT_SUCCESS) {
+    let eventData = action.payload;
+    let oldEvents = state.events;
+
+    let index = oldEvents.findIndex(
+      event => event.eventID === eventData.eventID
+    );
+
+    oldEvents[index].eventName = eventData.eventName;
+    oldEvents[index].eventDate = eventData.eventDate;
+    oldEvents[index].eventDuration = eventData.eventDuration;
+    oldEvents[index].evenLocation = eventData.evenLocation;
+    oldEvents[index].eventDescription = eventData.eventDescription;
+    oldEvents[index].eventFees = eventData.eventFees;
+    oldEvents[index].eventMaxAllowedParticipants =
+      eventData.eventMaxAllowedParticipants;
+    oldEvents[index].eventTags = eventData.eventTags;
+
+    return Object.assign({}, state, {
+      isLoading: false,
+      errorMessage: "",
+      events: oldEvents
     });
   }
   return state;

@@ -7,7 +7,9 @@ import {
   ADD_EVENT_FAILURE,
   ADD_EVENT_RESET,
   DELETE_EVENT_REQUEST,
-  DELETE_EVENT_SUCCESS
+  DELETE_EVENT_SUCCESS,
+  EDIT_EVENT_REQUEST,
+  EDIT_EVENT_SUCCESS
 } from "./index";
 
 export const requestAddEvent = () => ({
@@ -42,6 +44,15 @@ export const receiveDeleteEvent = eventID => ({
   payload: eventID
 });
 
+export const requestEditEvent = () => ({
+  type: EDIT_EVENT_REQUEST
+});
+
+export const receiveEditEvent = eventData => ({
+  type: EDIT_EVENT_SUCCESS,
+  payload: eventData
+});
+
 export function addEvent(newEvent) {
   console.log("after submit eventData :", newEvent.eventID);
   return dispatch => {
@@ -67,6 +78,18 @@ export function deleteEvent(eventID) {
         className: "custom-toast"
       });
       dispatch(push("/"));
+    }, 1000);
+  };
+}
+
+export function editEvent(eventData) {
+  return dispatch => {
+    dispatch(requestEditEvent());
+    setTimeout(() => {
+      dispatch(receiveEditEvent(eventData));
+      toast.success("Event updated successfully!", {
+        className: "custom-toast"
+      });
     }, 1000);
   };
 }

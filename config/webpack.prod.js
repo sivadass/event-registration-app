@@ -3,7 +3,7 @@ const merge = require("webpack-merge");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const CleanWbepackPlugin = require("clean-webpack-plugin");
-
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const webpackCommon = require("./webpack.common");
 
 const pathsToClean = ["dist"];
@@ -42,6 +42,22 @@ module.exports = merge.smart(webpackCommon, {
   },
   plugins: [
     new CleanWbepackPlugin(pathsToClean, cleanOptions),
-    new OptimizeCssAssetsPlugin()
+    new OptimizeCssAssetsPlugin(),
+    new CopyWebpackPlugin([
+      {
+        from: "./favicon.ico",
+        to: "favicon.ico",
+        context: "./",
+        toType: "file",
+        force: true
+      },
+      {
+        from: "./_redirects",
+        to: "_redirects",
+        context: "./",
+        toType: "file",
+        force: true
+      }
+    ])
   ]
 });

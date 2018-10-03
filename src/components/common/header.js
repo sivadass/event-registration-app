@@ -25,11 +25,34 @@ class Header extends React.Component {
     e.preventDefault();
     this.props.logoutUser();
   };
+
+  handleOutsideClick = e => {
+    let isInside = this.node.contains(e.target);
+    if (!isInside && this.state.isDropdownActive) {
+      this.setState({ isDropdownActive: false });
+    }
+    // if () {
+    //   alert("hi");
+    // }
+    // alert("ji");
+    // this.state = {
+    //   isDropdownActive: false
+    // };
+  };
+
+  componentWillMount() {
+    document.addEventListener("mousedown", this.handleOutsideClick, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleOutsideClick, false);
+  }
+
   render() {
     const { isDropdownActive } = this.state;
     const { isAuthenticated } = this.props;
     let renderUserMenu = (
-      <div className="user-menu">
+      <div className="user-menu" ref={node => (this.node = node)}>
         <a href="#" className="trigger" onClick={this.toggleDropdown}>
           <img src={avatar} alt="Avatar" />{" "}
           {/* <span>{typeof fullName !== "undefined" && fullName}</span> */}

@@ -3,6 +3,8 @@ import {
   ADD_EVENT_SUCCESS,
   ADD_EVENT_FAILURE,
   ADD_EVENT_RESET,
+  DELETE_EVENT_REQUEST,
+  DELETE_EVENT_SUCCESS,
   LOGOUT_USER
 } from "../actions";
 
@@ -20,7 +22,8 @@ const events = (state = initialState, action) => {
   }
   if (action.type === ADD_EVENT_SUCCESS) {
     let newEvent = action.payload;
-    let updatedEvents = [...state.events, newEvent];
+    let oldEvents = state.events;
+    let updatedEvents = oldEvents.concat(newEvent);
     return Object.assign({}, state, {
       isLoading: false,
       errorMessage: "",
@@ -34,6 +37,12 @@ const events = (state = initialState, action) => {
       errorMessage: errorMessage
     });
   }
+  if (action.type === DELETE_EVENT_REQUEST) {
+    return Object.assign({}, state, {
+      isLoading: true,
+      errorMessage: ""
+    });
+  }
   if (action.type === ADD_EVENT_RESET) {
     return Object.assign({}, state, {
       isLoading: false,
@@ -44,6 +53,25 @@ const events = (state = initialState, action) => {
     return Object.assign({}, state, {
       isLoading: false,
       events: state.events
+    });
+  }
+  if (action.type === DELETE_EVENT_REQUEST) {
+    return Object.assign({}, state, {
+      isLoading: true,
+      errorMessage: ""
+    });
+  }
+  if (action.type === DELETE_EVENT_SUCCESS) {
+    let eventID = action.payload;
+    let allEvents = state.events;
+    let index = allEvents.findIndex(event => event.eventID == eventID);
+    if (index !== -1) {
+      allEvents.splice(index, 1);
+    }
+    return Object.assign({}, state, {
+      isLoading: false,
+      errorMessage: "",
+      events: allEvents
     });
   }
   return state;

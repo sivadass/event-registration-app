@@ -2,8 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { Route, Switch } from "react-router-dom";
 import { ConnectedRouter } from "connected-react-router";
+import { ToastContainer } from "react-toastify";
 import { Provider } from "react-redux";
-import "./styles/index.scss";
 
 import ProtectedRoute from "./protected-route";
 import Dashboard from "./components/pages/dashboard";
@@ -18,6 +18,9 @@ import EventDetails from "./components/pages/event-details";
 import ScrollToTop from "./components/common/scroll-to-top";
 import { store, history } from "./store";
 import { saveState } from "./utils/local-storage";
+
+import "./styles/index.scss";
+import "react-toastify/dist/ReactToastify.css";
 
 store.subscribe(() => {
   saveState(store.getState());
@@ -50,6 +53,7 @@ const App = props => {
               </Switch>
             </div>
             <Footer />
+            <ToastContainer position="bottom-center" autoClose={5000} />
           </div>
         </ScrollToTop>
       </ConnectedRouter>

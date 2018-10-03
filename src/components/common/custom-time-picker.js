@@ -7,7 +7,7 @@ class CustomTimePicker extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      dateValue: moment().add(1, "d")
+      dateValue: ""
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -39,6 +39,7 @@ class CustomTimePicker extends React.Component {
           showTimeSelect
           dateFormat="LLL"
           className="custom-date-picker"
+          placeholderText="Please select date"
         />
         {!!this.props.error &&
           this.props.touched && (

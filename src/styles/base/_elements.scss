@@ -82,7 +82,7 @@ textarea.form-control {
     border-color: $primary-color;
   }
   &.primary {
-    background: $accent-color;
+    background: $primary-color;
     color: $white;
     border-color: transparent;
   }
@@ -90,7 +90,11 @@ textarea.form-control {
     line-height: 48px;
     text-align: center;
     color: inherit;
+    &.primary {
+      color: $white;
+    }
   }
+
   &.muted {
     border-color: transparent;
   }
@@ -168,5 +172,27 @@ textarea.form-control {
         display: block;
       }
     }
+  }
+}
+
+// Toast
+.custom-toast {
+  &.Toastify__toast {
+    border-radius: 6px;
+  }
+}
+
+// Empty  State
+.empty-state {
+  padding: 64px 16px;
+  text-align: center;
+  opacity: 0.45;
+  h1 {
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+  p {
+    font-size: 20px;
+    line-height: 32px;
   }
 }

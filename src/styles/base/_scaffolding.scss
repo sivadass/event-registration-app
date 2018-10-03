@@ -24,11 +24,16 @@
 }
 
 .page-content {
-  margin-bottom: 16px;
   background: $white;
-  padding: 24px;
+  padding: 48px;
   border-radius: 6px;
   box-shadow: $default-box-shadow;
+  @media (max-width: 480px) {
+    padding: 24px;
+  }
+  @media (max-width: 360px) {
+    padding: 16px;
+  }
 }
 
 .page-loading {

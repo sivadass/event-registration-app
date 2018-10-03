@@ -38,11 +38,11 @@ class Login extends React.Component {
                 .required("Password is required")
             })}
             onSubmit={(values, actions) => {
+              this.props.loginUser(values);
               setTimeout(() => {
-                this.props.loginUser(values);
                 actions.setSubmitting(false);
                 actions.resetForm();
-              }, 1000);
+              }, 3000);
             }}
           >
             {props => {

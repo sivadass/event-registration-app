@@ -12,6 +12,7 @@ import { locations, tags } from "../../utils/select-options";
 import CustomSelect from "../common/custom-select";
 import CustomTimePicker from "../common/custom-time-picker";
 import CustomFieldsGenerator from "../common/custom-fields-generator";
+import moment from "moment";
 
 class AddEvent extends React.Component {
   render() {
@@ -33,7 +34,7 @@ class AddEvent extends React.Component {
               fees: "",
               tags: [],
               date: "",
-              maxAllowedParticipants: 0,
+              maxAllowedParticipants: "",
               customFields: [],
               userID: this.props.userID
             }}
@@ -55,7 +56,7 @@ class AddEvent extends React.Component {
                 .required("Fees is required")
                 .max(5, "Maximum 5 digits only"),
               tags: Yup.array()
-                .min(3, "Pick at least 3 tags")
+                .min(1, "Pick at least 1 tag")
                 .of(
                   Yup.object().shape({
                     label: Yup.string().required(),
@@ -80,7 +81,10 @@ class AddEvent extends React.Component {
                   eventDescription: values.description,
                   eventDuration: values.duration,
                   eventLocation: values.location,
-                  eventTags: values.tags
+                  eventTags: values.tags,
+                  eventDate: moment(values.date).format(),
+                  eventFees: values.fees,
+                  eventMaxAllowedParticipants: values.maxAllowedParticipants
                 };
                 this.props.addEvent(eventData);
                 actions.setSubmitting(false);
@@ -272,7 +276,7 @@ class AddEvent extends React.Component {
                     <div className="col-6">
                       <CustomSelect
                         id="tags"
-                        label="Tags (select at least 3) "
+                        label="Tags (select at least 1) "
                         isMulti={true}
                         options={tags}
                         value={values.tags}

@@ -2,12 +2,20 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Loader from "../common/loader";
 import Icon from "../common/icons";
+import EventMediaObject from "../common/event-media-object";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
+import { deleteEvent } from "../../actions/events";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import PropTypes from "prop-types";
 
 class EventDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: false
+      isLoading: false,
+      eventData: {}
     };
   }
   componentDidMount() {
@@ -18,15 +26,43 @@ class EventDetails extends React.Component {
     this.setState({
       isLoading: true
     });
-    setTimeout(() => {
-      this.setState({
-        isLoading: false
-      });
-    }, 1000);
+    let events = this.props.events;
+    if (events) {
+      let eventID = this.props.match.params.id;
+      let index = events.findIndex(event => event.eventID == eventID);
+      if (index !== -1) {
+        this.setState({
+          eventData: events[index]
+        });
+      }
+      setTimeout(() => {
+        this.setState({
+          isLoading: false
+        });
+      }, 1000);
+    }
+  };
+
+  handleDelete = () => {
+    confirmAlert({
+      title: "Confirm to delete",
+      message: "Are you sure to do this?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => this.props.deleteEvent(this.props.match.params.id)
+        },
+        {
+          label: "No"
+        }
+      ]
+    });
   };
 
   render() {
-    const { isLoading } = this.state;
+    const { isLoading, eventData } = this.state;
+    const { userID } = this.props;
+    console.log("creator : ", userID);
     if (isLoading) {
       return (
         <div className="page-loading">
@@ -40,60 +76,85 @@ class EventDetails extends React.Component {
           <Link to="/" className="back-button">
             &larr;
           </Link>
-          Event Details: <span>{`#${this.props.match.params.id}`}</span>
+          Event Details
         </div>
         <div className="page-content">
           <div className="row">
             <div className="col-8">
               <div className="event-meta">
-                <h1>Chennai PY Meetup</h1>
+                <h1>{eventData.eventName}</h1>
                 <p>
                   <span className="event-meta-item">
                     <Icon name="user" size={16} />
                     Hosted by <strong>Sivadass N</strong>
                   </span>
                 </p>
-                <p>
-                  <span className="event-meta-item">
-                    <Icon name="calendar" size={16} />
-                    <strong>October 3, 2018 11:52 AM</strong>
-                  </span>
-                </p>
-                <p>
-                  <span className="event-meta-item">
-                    <Icon name="location" size={14} />
-                    Chennai
-                  </span>
-                  <span className="event-meta-item">
-                    <Icon name="duration" size={14} />
-                    {`${4} hours`}
-                  </span>
-                </p>
+              </div>
+              <div className="event-banner">
+                <img
+                  src="https://via.placeholder.com/700x300"
+                  alt="event banner"
+                />
               </div>
               <div className="event-description">
-                Industrial Light & Magic (ILM) was started in 1975 by filmmaker
-                George Lucas, in order to create the special effects for the
-                original Star Wars film. Since then, ILM has grown into a visual
-                effects powerhouse that has contributed not just to the entire
-                Star Wars series, but also to films as diverse as Forrest Gump,
-                Jurassic Park, Who Framed Roger Rabbit, Raiders of the Lost Ark,
-                and Terminator 2. ILM has won numerous Academy Awards for Best
-                Visual Effects, not to mention a string of Clio awards for its
-                work on television advertisements. While much of ILM's early
-                work was done with miniature models and motion controlled
-                cameras, ILM has long been on the bleeding edge of computer
-                generated visual effects. Its computer graphics division dates
-                back to 1979, and its first CG production was the 1982 Genesis
-                sequence from Star Trek II: The Wrath of Khan.
+                {eventData.eventDescription}
               </div>
             </div>
             <div className="col-4">
-              <h3>Are you going?</h3>
-              <div className="event-actions">
-                <Link to="/" className="button button-link">
-                  RSVP NOW
-                </Link>
+              <div className="event-sidebar">
+                <h3>Event Details</h3>
+                <EventMediaObject
+                  icon="calendar"
+                  title="Date"
+                  content={eventData.eventDate}
+                />
+                <EventMediaObject
+                  icon="duration"
+                  title="Duration"
+                  content={`${eventData.eventDuration} Hours`}
+                />
+                <EventMediaObject
+                  icon="location"
+                  title="Location"
+                  content={
+                    eventData.eventLocation ? eventData.eventLocation.label : ""
+                  }
+                />
+                <EventMediaObject
+                  icon="price"
+                  title="Price"
+                  content={`$ ${eventData.eventFees}`}
+                />
+                <EventMediaObject
+                  icon="users"
+                  title="Maximum Allowed"
+                  content={eventData.eventMaxAllowedParticipants}
+                />
+                {userID !== eventData.eventCreator && (
+                  <div className="event-actions">
+                    <Link to="/" className="button primary button-link">
+                      RSVP NOW
+                    </Link>
+                  </div>
+                )}
               </div>
+              {userID === eventData.eventCreator && (
+                <div className="event-sidebar creator-options">
+                  <h3>Update Event</h3>
+                  <div className="event-actions">
+                    <Link
+                      to={`/events/${this.props.match.params.id}/edit/`}
+                      className="button button-link"
+                    >
+                      <Icon name="edit" size="18" />
+                      EDIT
+                    </Link>
+                    <button className="button" onClick={this.handleDelete}>
+                      <Icon name="trash" size="18" /> DELTE
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -102,4 +163,22 @@ class EventDetails extends React.Component {
   }
 }
 
-export default EventDetails;
+const mapStateToProps = ({ auth, events }) => ({
+  userID: auth.user.userID,
+  events: events.events
+});
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ deleteEvent }, dispatch);
+}
+
+EventDetails.ProtoTypes = {
+  events: PropTypes.array,
+  userID: PropTypes.string,
+  deleteEvent: PropTypes.func
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EventDetails);

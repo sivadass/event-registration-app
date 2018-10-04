@@ -9,7 +9,9 @@ import {
   DELETE_EVENT_REQUEST,
   DELETE_EVENT_SUCCESS,
   EDIT_EVENT_REQUEST,
-  EDIT_EVENT_SUCCESS
+  EDIT_EVENT_SUCCESS,
+  RSVP_EVENT_REQUEST,
+  RSVP_EVENT_SUCCESS
 } from "./index";
 
 export const requestAddEvent = () => ({
@@ -53,6 +55,15 @@ export const receiveEditEvent = eventData => ({
   payload: eventData
 });
 
+export const requestRsvpEvent = () => ({
+  type: RSVP_EVENT_REQUEST
+});
+
+export const receiveRsvpEvent = attendee => ({
+  type: RSVP_EVENT_SUCCESS,
+  payload: attendee
+});
+
 export function addEvent(newEvent) {
   console.log("after submit eventData :", newEvent.eventID);
   return dispatch => {
@@ -88,6 +99,18 @@ export function editEvent(eventData) {
     setTimeout(() => {
       dispatch(receiveEditEvent(eventData));
       toast.success("Event updated successfully!", {
+        className: "custom-toast"
+      });
+    }, 1000);
+  };
+}
+
+export function rsvpEvent(attendee) {
+  return dispatch => {
+    dispatch(requestRsvpEvent());
+    setTimeout(() => {
+      dispatch(receiveRsvpEvent(attendee));
+      toast.success("RSVP completed successfully!", {
         className: "custom-toast"
       });
     }, 1000);

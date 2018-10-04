@@ -5,10 +5,11 @@ import Icon from "../common/icons";
 import EventMediaObject from "../common/event-media-object";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import { deleteEvent } from "../../actions/events";
+import { deleteEvent, rsvpEvent } from "../../actions/events";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
+import { toast } from "react-toastify";
 
 class EventDetails extends React.Component {
   constructor(props) {
@@ -43,6 +44,40 @@ class EventDetails extends React.Component {
     }
   };
 
+  handleConfirm = onClose => {
+    let rsvpData = {
+      attendee: this.props.userID,
+      eventID: this.props.match.params.id
+    };
+    onClose();
+    this.props.rsvpEvent(rsvpData);
+    this.checkRSVP();
+  };
+
+  handleRSVP = () => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className="react-confirm-alert-body custom-confirm">
+            <h1>Please complete RSVP</h1>
+            <p>You can confirm your RSVP by clicking the button below</p>
+            <div className="custom-confirm-actions">
+              <button
+                className="button primary"
+                onClick={this.handleConfirm.bind(this, onClose)}
+              >
+                Confirm
+              </button>
+              <button className="button" onClick={onClose}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        );
+      }
+    });
+  };
+
   handleDelete = () => {
     confirmAlert({
       title: "Confirm to delete",
@@ -59,10 +94,20 @@ class EventDetails extends React.Component {
     });
   };
 
+  checkRSVP = () => {
+    let attendees = this.state.eventData.attendees;
+    if (attendees.length > 0) {
+      let index = attendees.findIndex(
+        attendee => attendee === this.props.userID
+      );
+      if (index !== -1) return true;
+    }
+    return false;
+  };
+
   render() {
     const { isLoading, eventData } = this.state;
     const { userID } = this.props;
-    console.log("creator : ", userID);
     if (isLoading) {
       return (
         <div className="page-loading">
@@ -132,9 +177,16 @@ class EventDetails extends React.Component {
                 />
                 {userID !== eventData.eventCreator && (
                   <div className="event-actions">
-                    <Link to="/" className="button primary button-link">
-                      RSVP NOW
-                    </Link>
+                    <button
+                      onClick={this.handleRSVP}
+                      className={
+                        this.checkRSVP
+                          ? "button primary"
+                          : "button primary disabled"
+                      }
+                    >
+                      {this.checkRSVP ? "RSVP NOW" : "RSVP CONFIRMED"}
+                    </button>
                   </div>
                 )}
               </div>
@@ -169,13 +221,14 @@ const mapStateToProps = ({ auth, events }) => ({
 });
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ deleteEvent }, dispatch);
+  return bindActionCreators({ deleteEvent, rsvpEvent }, dispatch);
 }
 
 EventDetails.ProtoTypes = {
   events: PropTypes.array,
   userID: PropTypes.string,
-  deleteEvent: PropTypes.func
+  deleteEvent: PropTypes.func,
+  rsvpEvent: PropTypes.func
 };
 
 export default connect(

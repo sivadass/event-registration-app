@@ -42,6 +42,12 @@
   @media (max-width: 480px) {
     margin-left: 0;
   }
+  .event-actions {
+    .button.primary.disabled {
+      pointer-events: none;
+      opacity: 0.66;
+    }
+  }
   &.creator-options {
     margin-top: 24px;
   }
@@ -75,6 +81,18 @@
     .icon {
       vertical-align: text-bottom;
       margin-right: 6px;
+    }
+  }
+}
+.custom-confirm {
+  max-width: 480px;
+  padding: 48px;
+  width: 100%;
+  .custom-confirm-actions {
+    margin-top: 24px;
+    display: flex;
+    .button:first-child {
+      margin-right: 16px;
     }
   }
 }

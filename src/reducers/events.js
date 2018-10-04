@@ -7,6 +7,8 @@ import {
   DELETE_EVENT_SUCCESS,
   EDIT_EVENT_REQUEST,
   EDIT_EVENT_SUCCESS,
+  RSVP_EVENT_REQUEST,
+  RSVP_EVENT_SUCCESS,
   LOGOUT_USER
 } from "../actions";
 
@@ -104,6 +106,30 @@ const events = (state = initialState, action) => {
       isLoading: false,
       errorMessage: "",
       events: oldEvents
+    });
+  }
+
+  if (action.type === RSVP_EVENT_REQUEST) {
+    return Object.assign({}, state, {
+      isLoading: true,
+      errorMessage: ""
+    });
+  }
+
+  if (action.type === RSVP_EVENT_SUCCESS) {
+    let attendee = action.payload.attendee;
+    let eventID = action.payload.eventID;
+    let allEvents = state.events;
+    let index = allEvents.findIndex(event => event.eventID === eventID);
+    let attendees = allEvents[index].attendees || [];
+
+    attendees.push(attendee);
+    allEvents[index].attendees = attendees;
+
+    return Object.assign({}, state, {
+      isLoading: false,
+      errorMessage: "",
+      events: allEvents
     });
   }
   return state;

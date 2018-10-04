@@ -182,6 +182,33 @@ textarea.form-control {
   }
 }
 
+// Confirm Alerts
+.react-confirm-alert-body {
+  font-family: "Inter UI", Arial, Helvetica, sans-serif;
+  color: $light-text-color;
+  h1 {
+    margin-bottom: 8px;
+    line-height: 40px;
+    color: $text-color;
+    font-size: 32px;
+  }
+}
+.react-confirm-alert-button-group {
+  & > button {
+    font-size: 16px;
+    min-width: 90px;
+    height: 44px;
+    background: $primary-color;
+    border-radius: 6px;
+    margin-right: 16px;
+    &:nth-child(2) {
+      background: transparent;
+      color: $primary-color;
+      border: 1px solid $primary-color;
+    }
+  }
+}
+
 // Empty  State
 .empty-state {
   padding: 64px 16px;

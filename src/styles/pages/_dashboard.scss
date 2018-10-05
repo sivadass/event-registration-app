@@ -39,6 +39,7 @@
   .event-item-meta {
     margin: 16px;
     flex-grow: 1;
+    position: relative;
     h4 {
       font-size: 20px;
       font-weight: normal;
@@ -53,6 +54,11 @@
       opacity: 0.33;
       margin-right: 6px;
       vertical-align: middle;
+    }
+    .status {
+      position: absolute;
+      top: 0;
+      right: 0;
     }
   }
   @media (max-width: 480px) {

@@ -14,7 +14,16 @@ class Dashboard extends React.Component {
     const { events, userID } = this.props;
     let myEvents = events.filter(event => event.eventCreator === userID);
     let renderAllEvents = events.map(event => {
-      return <EventListItem event={event} key={event.eventID} />;
+      let isGoing = false;
+      if (event.attendees) {
+        let index = event.attendees.findIndex(attendee => attendee === userID);
+        if (index !== -1) {
+          isGoing = true;
+        }
+      }
+      return (
+        <EventListItem event={event} key={event.eventID} isGoing={isGoing} />
+      );
     });
     let renderMyEvents = myEvents.map(event => {
       return <EventListItem event={event} key={event.eventID} />;

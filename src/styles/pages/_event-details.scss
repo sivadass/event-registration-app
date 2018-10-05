@@ -43,9 +43,12 @@
     margin-left: 0;
   }
   .event-actions {
-    .button.primary.disabled {
+    .button.primary.confirmed {
+      background: #07bc0c;
       pointer-events: none;
-      opacity: 0.66;
+      &:hover {
+        opacity: 0.66;
+      }
     }
   }
   &.creator-options {

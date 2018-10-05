@@ -121,8 +121,10 @@ const events = (state = initialState, action) => {
     let eventID = action.payload.eventID;
     let allEvents = state.events;
     let index = allEvents.findIndex(event => event.eventID === eventID);
-    let attendees = allEvents[index].attendees || [];
-
+    let attendees = [];
+    if (index === -1) {
+      attendees = allEvents[index].attendees;
+    }
     attendees.push(attendee);
     allEvents[index].attendees = attendees;
 

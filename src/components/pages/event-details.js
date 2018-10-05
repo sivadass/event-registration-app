@@ -9,16 +9,17 @@ import { deleteEvent, rsvpEvent } from "../../actions/events";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
-import { toast } from "react-toastify";
 
 class EventDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: false,
-      eventData: {}
+      eventData: {},
+      isRSVPed: false
     };
   }
+
   componentDidMount() {
     this.getEventDetails();
   }
@@ -32,9 +33,14 @@ class EventDetails extends React.Component {
       let eventID = this.props.match.params.id;
       let index = events.findIndex(event => event.eventID == eventID);
       if (index !== -1) {
-        this.setState({
-          eventData: events[index]
-        });
+        this.setState(
+          {
+            eventData: events[index]
+          },
+          () => {
+            this.checkRSVP();
+          }
+        );
       }
       setTimeout(() => {
         this.setState({
@@ -49,9 +55,11 @@ class EventDetails extends React.Component {
       attendee: this.props.userID,
       eventID: this.props.match.params.id
     };
-    onClose();
     this.props.rsvpEvent(rsvpData);
-    this.checkRSVP();
+    onClose();
+    setTimeout(() => {
+      this.checkRSVP();
+    }, 2000);
   };
 
   handleRSVP = () => {
@@ -95,18 +103,25 @@ class EventDetails extends React.Component {
   };
 
   checkRSVP = () => {
-    let attendees = this.state.eventData.attendees;
+    let attendees = this.state.eventData.attendees || [];
     if (attendees.length > 0) {
       let index = attendees.findIndex(
         attendee => attendee === this.props.userID
       );
-      if (index !== -1) return true;
+      if (index !== -1) {
+        this.setState({
+          isRSVPed: true
+        });
+      }
+    } else {
+      this.setState({
+        isRSVPed: false
+      });
     }
-    return false;
   };
 
   render() {
-    const { isLoading, eventData } = this.state;
+    const { isLoading, isRSVPed, eventData } = this.state;
     const { userID } = this.props;
     if (isLoading) {
       return (
@@ -180,12 +195,12 @@ class EventDetails extends React.Component {
                     <button
                       onClick={this.handleRSVP}
                       className={
-                        this.checkRSVP
+                        !isRSVPed
                           ? "button primary"
-                          : "button primary disabled"
+                          : "button primary confirmed"
                       }
                     >
-                      {this.checkRSVP ? "RSVP NOW" : "RSVP CONFIRMED"}
+                      {!isRSVPed ? "RSVP NOW" : "RSVP CONFIRMED"}
                     </button>
                   </div>
                 )}

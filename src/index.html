@@ -18,22 +18,20 @@
 
     .pre-loader h1 {
       color: #b6bbcb;
-      font-weight: normal;
+      font-weight: 400;
       font-size: 45px;
-      animation: preloading 1200ms linear infinite;
+      animation: preloading 1.2s linear infinite
     }
 
     @keyframes preloading {
-      0% {
-        opacity: 1;
+
+      0%,
+      100% {
+        opacity: 1
       }
 
       50% {
-        opacity: 0;
-      }
-
-      100% {
-        opacity: 1;
+        opacity: 0
       }
     }
   </style>

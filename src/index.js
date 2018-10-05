@@ -5,19 +5,60 @@ import { ConnectedRouter } from "connected-react-router";
 import { ToastContainer } from "react-toastify";
 import { Provider } from "react-redux";
 
+import DynamicImport from "./dynamic-import";
 import ProtectedRoute from "./protected-route";
-import Dashboard from "./components/pages/dashboard";
 import Header from "./components/common/header";
-import Login from "./components/pages/login";
-import Register from "./components/pages/register";
 import Footer from "./components/common/footer";
 import NoMatch from "./components/pages/no-match";
-import AddEvent from "./components/pages/add-event";
-import EditEvent from "./components/pages/edit-event";
-import EventDetails from "./components/pages/event-details";
 import ScrollToTop from "./components/common/scroll-to-top";
 import { store, history } from "./store";
 import { saveState } from "./utils/local-storage";
+
+const Login = props => (
+  <DynamicImport load={() => import("./components/pages/login")}>
+    {Component =>
+      Component === null ? <p>Loading</p> : <Component {...props} />
+    }
+  </DynamicImport>
+);
+const Register = props => (
+  <DynamicImport load={() => import("./components/pages/register")}>
+    {Component =>
+      Component === null ? <p>Loading</p> : <Component {...props} />
+    }
+  </DynamicImport>
+);
+const Dashboard = props => (
+  <DynamicImport load={() => import("./components/pages/dashboard")}>
+    {Component =>
+      Component === null ? <p>Loading</p> : <Component {...props} />
+    }
+  </DynamicImport>
+);
+
+const AddEvent = props => (
+  <DynamicImport load={() => import("./components/pages/add-event")}>
+    {Component =>
+      Component === null ? <p>Loading</p> : <Component {...props} />
+    }
+  </DynamicImport>
+);
+
+const EditEvent = props => (
+  <DynamicImport load={() => import("./components/pages/edit-event")}>
+    {Component =>
+      Component === null ? <p>Loading</p> : <Component {...props} />
+    }
+  </DynamicImport>
+);
+
+const EventDetails = props => (
+  <DynamicImport load={() => import("./components/pages/event-details")}>
+    {Component =>
+      Component === null ? <p>Loading</p> : <Component {...props} />
+    }
+  </DynamicImport>
+);
 
 import "./styles/index.scss";
 import "react-toastify/dist/ReactToastify.css";
@@ -35,8 +76,8 @@ const App = props => {
             <Header />
             <div className="main">
               <Switch>
-                <Route path="/login" component={Login} />
-                <Route path="/register" component={Register} />
+                <Route path="/login/" component={Login} />
+                <Route path="/register/" component={Register} />
                 <ProtectedRoute exact path="/" component={Dashboard} />
                 <ProtectedRoute exact path="/add-event/" component={AddEvent} />
                 <ProtectedRoute

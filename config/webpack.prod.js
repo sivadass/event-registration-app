@@ -4,6 +4,7 @@ const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const CleanWbepackPlugin = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const MomentLocalesPlugin = require("moment-locales-webpack-plugin");
 const webpackCommon = require("./webpack.common");
 
 const pathsToClean = ["dist"];
@@ -13,8 +14,9 @@ const cleanOptions = {
 
 module.exports = merge.smart(webpackCommon, {
   output: {
-    filename: "main.[chunkhash].js",
-    path: path.resolve(__dirname, "../dist/")
+    filename: "bundle.[chunkhash].js",
+    path: path.resolve(__dirname, "../dist/"),
+    publicPath: "/"
   },
   mode: "production",
   optimization: {
@@ -42,6 +44,7 @@ module.exports = merge.smart(webpackCommon, {
   },
   plugins: [
     new CleanWbepackPlugin(pathsToClean, cleanOptions),
+    new MomentLocalesPlugin(),
     new OptimizeCssAssetsPlugin(),
     new CopyWebpackPlugin([
       {

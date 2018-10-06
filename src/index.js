@@ -10,53 +10,42 @@ import ProtectedRoute from "./protected-route";
 import Header from "./components/common/header";
 import Footer from "./components/common/footer";
 import NoMatch from "./components/pages/no-match";
+import Loader from "./components/common/loader";
 import ScrollToTop from "./components/common/scroll-to-top";
 import { store, history } from "./store";
 import { saveState } from "./utils/local-storage";
 
 const Login = props => (
   <DynamicImport load={() => import("./components/pages/login")}>
-    {Component =>
-      Component === null ? <p>Loading</p> : <Component {...props} />
-    }
+    {Component => (Component === null ? <Loader /> : <Component {...props} />)}
   </DynamicImport>
 );
 const Register = props => (
   <DynamicImport load={() => import("./components/pages/register")}>
-    {Component =>
-      Component === null ? <p>Loading</p> : <Component {...props} />
-    }
+    {Component => (Component === null ? <Loader /> : <Component {...props} />)}
   </DynamicImport>
 );
 const Dashboard = props => (
   <DynamicImport load={() => import("./components/pages/dashboard")}>
-    {Component =>
-      Component === null ? <p>Loading</p> : <Component {...props} />
-    }
+    {Component => (Component === null ? <Loader /> : <Component {...props} />)}
   </DynamicImport>
 );
 
 const AddEvent = props => (
   <DynamicImport load={() => import("./components/pages/add-event")}>
-    {Component =>
-      Component === null ? <p>Loading</p> : <Component {...props} />
-    }
+    {Component => (Component === null ? <Loader /> : <Component {...props} />)}
   </DynamicImport>
 );
 
 const EditEvent = props => (
   <DynamicImport load={() => import("./components/pages/edit-event")}>
-    {Component =>
-      Component === null ? <p>Loading</p> : <Component {...props} />
-    }
+    {Component => (Component === null ? <Loader /> : <Component {...props} />)}
   </DynamicImport>
 );
 
 const EventDetails = props => (
   <DynamicImport load={() => import("./components/pages/event-details")}>
-    {Component =>
-      Component === null ? <p>Loading</p> : <Component {...props} />
-    }
+    {Component => (Component === null ? <Loader /> : <Component {...props} />)}
   </DynamicImport>
 );
 

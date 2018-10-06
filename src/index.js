@@ -9,48 +9,72 @@ import DynamicImport from "./dynamic-import";
 import ProtectedRoute from "./protected-route";
 import Header from "./components/common/header";
 import Footer from "./components/common/footer";
-import NoMatch from "./components/pages/no-match";
 import Loader from "./components/common/loader";
 import ScrollToTop from "./components/common/scroll-to-top";
 import { store, history } from "./store";
 import { saveState } from "./utils/local-storage";
+import "./styles/index.scss";
+import "react-toastify/dist/ReactToastify.css";
+
+const PreLoader = () => (
+  <div className="page-loading">
+    <Loader />
+  </div>
+);
 
 const Login = props => (
   <DynamicImport load={() => import("./components/pages/login")}>
-    {Component => (Component === null ? <Loader /> : <Component {...props} />)}
+    {Component =>
+      Component === null ? <PreLoader /> : <Component {...props} />
+    }
   </DynamicImport>
 );
 const Register = props => (
   <DynamicImport load={() => import("./components/pages/register")}>
-    {Component => (Component === null ? <Loader /> : <Component {...props} />)}
+    {Component =>
+      Component === null ? <PreLoader /> : <Component {...props} />
+    }
   </DynamicImport>
 );
 const Dashboard = props => (
   <DynamicImport load={() => import("./components/pages/dashboard")}>
-    {Component => (Component === null ? <Loader /> : <Component {...props} />)}
+    {Component =>
+      Component === null ? <PreLoader /> : <Component {...props} />
+    }
   </DynamicImport>
 );
 
 const AddEvent = props => (
   <DynamicImport load={() => import("./components/pages/add-event")}>
-    {Component => (Component === null ? <Loader /> : <Component {...props} />)}
+    {Component =>
+      Component === null ? <PreLoader /> : <Component {...props} />
+    }
   </DynamicImport>
 );
 
 const EditEvent = props => (
   <DynamicImport load={() => import("./components/pages/edit-event")}>
-    {Component => (Component === null ? <Loader /> : <Component {...props} />)}
+    {Component =>
+      Component === null ? <PreLoader /> : <Component {...props} />
+    }
   </DynamicImport>
 );
 
 const EventDetails = props => (
   <DynamicImport load={() => import("./components/pages/event-details")}>
-    {Component => (Component === null ? <Loader /> : <Component {...props} />)}
+    {Component =>
+      Component === null ? <PreLoader /> : <Component {...props} />
+    }
   </DynamicImport>
 );
 
-import "./styles/index.scss";
-import "react-toastify/dist/ReactToastify.css";
+const NoMatch = props => (
+  <DynamicImport load={() => import("./components/pages/no-match")}>
+    {Component =>
+      Component === null ? <PreLoader /> : <Component {...props} />
+    }
+  </DynamicImport>
+);
 
 store.subscribe(() => {
   saveState(store.getState());
